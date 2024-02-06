@@ -42,8 +42,8 @@ public class ProductRepository {
         while (iterator.hasNext()) {
             Product product = iterator.next();
             if (product.getProductId().equals(productId)) {
-                iterator.remove(); // Remove the product from the list
-                return; // Exit the method after deleting the product
+                iterator.remove();
+                return;
             }
         }
     }
