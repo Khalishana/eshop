@@ -37,6 +37,21 @@ public class ProductRepository {
         return null;
     }
 
+    public Product edit(String id, Product product) {
+        Iterator<Product> products = findAll();
+
+        int index = 0;
+        for (; products.hasNext(); index++) {
+            Product currentProduct = products.next();
+            if (currentProduct.getProductId().equals(id)) {
+                product.setProductId(currentProduct.getProductId());
+                break;
+            }
+        }
+
+        return productData.set(index, product);
+    }
+
     public void delete(String productId) {
         Iterator<Product> iterator = productData.iterator();
         while (iterator.hasNext()) {
