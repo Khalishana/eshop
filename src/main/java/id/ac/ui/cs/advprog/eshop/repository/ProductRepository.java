@@ -16,23 +16,36 @@ public class ProductRepository {
         return product;
     }
 
-    public Product edit(String id, Product product) {
-        Iterator<Product> products = findAll();
-
-        int index = 0;
-        for (; products.hasNext(); index++) {
-            Product currentProduct = products.next();
-            if (currentProduct.getProductId().equals(id)) {
-                product.setProductId(currentProduct.getProductId());
-                break;
+    public Product findById(String productId){
+        for (Product product : productData) {
+            if (product.getProductId().equals(productId)) {
+                return product;
             }
         }
-
-        return productData.set(index, product);
+        return null; //Jika tidak ditemukan produk dengan id yang sesuai
     }
 
-    public boolean delete(Product product) {
-        return productData.remove(product);
+    public Product update(Product updatedProduct){
+        for (int i = 0; i < productData.size(); i++) {
+            Product product = productData.get(i);
+            if (product.getProductId().equals(updatedProduct.getProductId())) {
+                // Update the product with the new details
+                productData.set(i, updatedProduct);
+                return updatedProduct;
+            }
+        }
+        return null;
+    }
+
+    public void delete(String productId) {
+        Iterator<Product> iterator = productData.iterator();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getProductId().equals(productId)) {
+                iterator.remove();
+                return;
+            }
+        }
     }
 
     public Iterator<Product> findAll(){
