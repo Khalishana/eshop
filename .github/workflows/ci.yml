@@ -1,4 +1,4 @@
-name: Continous Integration (CI)
+name: Continuous Integration (CI)
 
 ## Run CI jobs on all branches
 on:
