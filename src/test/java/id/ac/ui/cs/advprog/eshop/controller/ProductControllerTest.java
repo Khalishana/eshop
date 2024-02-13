@@ -7,18 +7,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.service.ProductService;
@@ -93,12 +90,16 @@ public class ProductControllerTest {
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    void testDeletePost() throws Exception {
-//        String id = String.valueOf(UUID.randomUUID());
-//
-//        mockMvc.perform(post("/product/delete/"+id))
-//                .andExpect(view().name("redirect:/product/list"));
-//        verify(service).delete(id);
-//    }
+    @Test
+    void testDeleteProduct() throws Exception {
+        String productIdToDelete = "857b3c84-8eab-4296-8ca9-6773ffd86517";
+
+        mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
+
+        mockMvc.perform(get("/product/delete/" + productIdToDelete))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/product/list"));
+
+        verify(productService).delete(productIdToDelete);
+    }
 }   
