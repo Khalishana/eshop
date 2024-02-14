@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,6 +36,11 @@ public class ProductControllerTest {
 
     MockMvc mockMvc;
 
+    @BeforeEach
+    public void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
+    }
+
     @Test
     void testCreateProductPage() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
@@ -49,6 +55,25 @@ public class ProductControllerTest {
         product.setProductName(productName);
         product.setProductQuantity(productQuantity);
         return product;
+    }
+
+    @Test
+    void testCreateProductPost() throws Exception {
+        Product productToCreate = new Product();
+        productToCreate.setProductId("6f1238f8-d13a-4e5b-936f-e55156158104");
+        productToCreate.setProductName("Sampo Cap Bambang");
+        productToCreate.setProductQuantity(100);
+
+        when(productService.create(any(Product.class))).thenReturn(productToCreate);
+
+        mockMvc.perform(post("/product/create")
+                        .param("productId", productToCreate.getProductId())
+                        .param("productName", productToCreate.getProductName())
+                        .param("productQuantity", String.valueOf(productToCreate.getProductQuantity())))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("list"));
+
+        verify(productService).create(any(Product.class));
     }
 
     @Test
@@ -88,6 +113,25 @@ public class ProductControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
         mockMvc.perform(get("/product/edit/" + product.getProductId().toString()))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testEditProductPost() throws Exception {
+        Product productToUpdate = new Product();
+        productToUpdate.setProductId("6f1238f8-d13a-4e5b-936f-e55156158104");
+        productToUpdate.setProductName("Sampo Cap Bambang");
+        productToUpdate.setProductQuantity(100);
+
+        when(productService.update(any(Product.class))).thenReturn(productToUpdate);
+
+        mockMvc.perform(post("/product/edit")
+                        .param("productId", productToUpdate.getProductId())
+                        .param("productName", productToUpdate.getProductName())
+                        .param("productQuantity", String.valueOf(productToUpdate.getProductQuantity())))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("list"));
+
+        verify(productService).update(any(Product.class));
     }
 
     @Test
