@@ -6,7 +6,7 @@
 name: pmd
 
 on:
-  # Run on all branches
+# Run on all branches
   push:
   pull_request:
 
