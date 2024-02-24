@@ -1,3 +1,7 @@
+Deployment Link: <br>
+https://advshop-khalishana.koyeb.app/product/list <br>
+https://advshop-khalishana.koyeb.app/car/listCar
+
 # Tutorial 1
 ## Reflection 1
 Dalam mengerjakan tutorial 1 ini, saya menerapkan Coding Standards yakni clean code dan secure coding. <br>
