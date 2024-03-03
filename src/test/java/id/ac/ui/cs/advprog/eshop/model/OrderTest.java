@@ -7,9 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Order;
+//import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Or;
 
 class OrderTest {
     private List<Product> products;
@@ -83,6 +82,6 @@ class OrderTest {
     void testSetStatusToInvalidStatus() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
                 this.products, 1708560000L, "Safira Sudrajat");
-        assertThrows(IllegalArgumentException.class, () -> prder.setStatus("MEOW"));
+        assertThrows(IllegalArgumentException.class, () -> order.setStatus("MEOW"));
     }
 }
