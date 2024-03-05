@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,8 @@ public class Payment {
     PaymentMethod method;
     Order order;
     Map<String, String> paymentData;
-    String status;
+    PaymentStatus status;
+
 
     public Payment(String id, String method, Order order, Map<String, String> paymentData) {
         this.id = id;
@@ -24,7 +26,7 @@ public class Payment {
         String[] methodList = {"VOUCHER_CODE", "BANK_TRANSFER"};
         this.order = order;
         this.paymentData = paymentData;
-        this.status = "WAITING_PAYMENT";
+        this.status = PaymentStatus.WAITING_PAYMENT;
 
         if (order == null) {
             throw new IllegalArgumentException("Order must not be null");
@@ -45,22 +47,23 @@ public class Payment {
         }
     }
 
-    public void setStatus(String status) {
-
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
     }
 
-    private String verifyVoucherCode() {
+
+    private PaymentStatus verifyVoucherCode() {
         String voucherCode = this.paymentData.get("voucherCode");
         if (voucherCode == null) {
-            return "REJECTED";
+            return PaymentStatus.REJECTED;
         }
 
         if (voucherCode.length() != 16) {
-            return "REJECTED";
+            return PaymentStatus.REJECTED;
         }
 
         if (!voucherCode.startsWith("ESHOP")) {
-            return "REJECTED";
+            return PaymentStatus.REJECTED;
         }
 
         int numCount = 0;
@@ -70,24 +73,24 @@ public class Payment {
             }
         }
         if (numCount != 8) {
-            return "REJECTED";
+            return PaymentStatus.REJECTED;
         }
 
-        return "SUCCESS";
+        return PaymentStatus.SUCCESS;
     }
 
-    private String verifyBankTransfer() {
+    private PaymentStatus verifyBankTransfer() {
         String bankName = this.paymentData.get("bankName");
         String referenceCode = this.paymentData.get("referenceCode");
 
         if (bankName == null || bankName.isEmpty()) {
-            return "REJECTED";
+            return PaymentStatus.REJECTED;
         }
 
         if (referenceCode == null || referenceCode.isEmpty()) {
-            return "REJECTED";
+            return PaymentStatus.REJECTED;
         }
 
-        return "SUCCESS";
+        return PaymentStatus.SUCCESS;
     }
 }
