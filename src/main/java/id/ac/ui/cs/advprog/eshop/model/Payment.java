@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,14 +13,14 @@ import java.util.Arrays;
 @Setter
 public class Payment {
     String id;
-    String method;
+    PaymentMethod method;
     Order order;
     Map<String, String> paymentData;
     String status;
 
     public Payment(String id, String method, Order order, Map<String, String> paymentData) {
         this.id = id;
-        this.method = method;
+        this.method = PaymentMethod.valueOf(method);
         String[] methodList = {"VOUCHER_CODE", "BANK_TRANSFER"};
         this.order = order;
         this.paymentData = paymentData;
@@ -36,10 +38,9 @@ public class Payment {
             throw new IllegalArgumentException("Invalid payment method");
         }
 
-        if (method.equals("VOUCHER_CODE")) {
+        if (this.method == PaymentMethod.VOUCHER_CODE) {
             this.status = verifyVoucherCode();
-        }
-        else if (method.equals("BANK_TRANSFER")) {
+        } else if (this.method == PaymentMethod.BANK_TRANSFER) {
             this.status = verifyBankTransfer();
         }
     }
