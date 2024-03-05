@@ -28,6 +28,10 @@ public class Payment {
             throw new IllegalArgumentException("Order must not be null");
         }
 
+        if (paymentData == null || paymentData.isEmpty()) {
+            throw new IllegalArgumentException("Payment data cannot be empty");
+        }
+
         if (Arrays.stream(methodList).noneMatch(item -> item.equals(method))) {
             throw new IllegalArgumentException("Invalid payment method");
         }

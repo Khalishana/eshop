@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,11 +41,29 @@ public class PaymentTest {
         this.orders.add(order2);
     }
 
+    // add more test
+    @Test
+    void testInvalidPaymentMethod() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                    "INVALID_METHOD", this.orders.get(1), this.paymentData);
+        });
+    }
+
+    @Test
+    void testEmptyPaymentData() {
+        this.paymentData.clear();
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                    "VOUCHER_CODE", this.orders.get(0), this.paymentData);
+        });
+    }
+
     @Test
     void testPaymentByVoucherCodeSuccessStatus() {
         this.paymentData.put("voucherCode", "ESHOP1234ABC5678");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "VOUCHER_CODE", this.orders.getFirst(), this.paymentData);
+                "VOUCHER_CODE", this.orders.get(1), this.paymentData);
 
         assertEquals("SUCCESS", payment.getStatus());
     }
@@ -54,7 +73,7 @@ public class PaymentTest {
     void testVoucherCodeRejectedStatusUnderSixteen() {
         this.paymentData.put("voucherCode", "ESHOP123");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "VOUCHER_CODE", this.orders.getFirst(), this.paymentData);
+                "VOUCHER_CODE", this.orders.get(1), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -62,7 +81,7 @@ public class PaymentTest {
     void testVoucherCodeRejectedStatusNoEshop() {
         this.paymentData.put("voucherCode", "12345678ABCDEFGH");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "VOUCHER_CODE", this.orders.getFirst(), this.paymentData);
+                "VOUCHER_CODE", this.orders.get(1), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -71,7 +90,7 @@ public class PaymentTest {
     void testVoucherCodeRejectedStatusUnderEight() {
         this.paymentData.put("voucherCode", "ESHOP123ABCDEFGH");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "VOUCHER_CODE", this.orders.getFirst(), this.paymentData);
+                "VOUCHER_CODE", this.orders.get(1), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -80,7 +99,7 @@ public class PaymentTest {
         this.paymentData.put("bankName", "BCA");
         this.paymentData.put("referenceCode", "11100");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "BANK_TRANSFER", this.orders.getFirst(), this.paymentData);
+                "BANK_TRANSFER", this.orders.get(1), this.paymentData);
         assertEquals("SUCCESS", payment.getStatus());
     }
 
@@ -88,7 +107,7 @@ public class PaymentTest {
     void testBankTransferRejectedStatusNoBankName() {
         this.paymentData.put("referenceCode", "11100");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "BANK_TRANSFER", this.orders.getFirst(), this.paymentData);
+                "BANK_TRANSFER", this.orders.get(1), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -96,7 +115,7 @@ public class PaymentTest {
     void testBankTransferRejectedStatusNoReferenceCode() {
         this.paymentData.put("bankName", "BCA");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "BANK_TRANSFER", this.orders.getFirst(), this.paymentData);
+                "BANK_TRANSFER", this.orders.get(1), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 }
