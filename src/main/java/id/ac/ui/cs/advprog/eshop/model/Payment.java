@@ -6,19 +6,24 @@ import lombok.Setter;
 
 import java.util.Map;
 
-@Builder
-@Getter
 public class Payment {
     String id;
     String method;
     Order order;
     Map<String, String> paymentData;
-    @Setter
     String status;
 
     public Payment(String id, String method, Order order, Map<String, String> paymentData) {
     }
 
     public Payment(String id, String method, Order order, Map<String, String> paymentData, String status) {
+    }
+
+    public void setStatus(String status) {
+
+    }
+
+    public Order getOrder() {
+        return null;
     }
 }

@@ -43,36 +43,33 @@ public class PaymentTest {
     @Test
     void testPaymentByVoucherCodeSuccessStatus() {
         this.paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "VOUCHER_CODE",this.paymentData);
+        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "VOUCHER_CODE", matchedOrder, this.paymentData);
 
         assertEquals("SUCCESS", payment.getStatus());
     }
 
-    // voucher code is not 16 characters long
     @Test
     void testVoucherCodeRejectedStatusUnderSixteen() {
         this.paymentData.put("voucherCode", "ESHOP123");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "VOUCHER_CODE", this.paymentData);
+        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "VOUCHER_CODE", matchedOrder, this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
-    // voucher code is not started with "ESHOP"
     @Test
     void testVoucherCodeRejectedStatusNoEshop() {
         this.paymentData.put("voucherCode", "12345678ABCDEFGH");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "VOUCHER_CODE", this.paymentData);
+        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "VOUCHER_CODE", matchedOrder, this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
-    // voucher code is not contain 8 numerical characters
     @Test
     void testVoucherCodeRejectedStatusUnderEight() {
         this.paymentData.put("voucherCode", "ESHOP123ABCDEFGH");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "VOUCHER_CODE", this.paymentData);
+        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "VOUCHER_CODE", matchedOrder, this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -80,24 +77,24 @@ public class PaymentTest {
     void testBankTransferSuccessStatus() {
         this.paymentData.put("bankName", "BCA");
         this.paymentData.put("referenceCode", "11100");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "BANK_TRANSFER", this.paymentData);
+        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "BANK_TRANSFER", matchedOrder, this.paymentData);
         assertEquals("SUCCESS", payment.getStatus());
     }
 
     @Test
     void testBankTransferRejectedStatusNoBankName() {
         this.paymentData.put("referenceCode", "11100");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "BANK_TRANSFER", this.paymentData);
+        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "BANK_TRANSFER", matchedOrder, this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
     @Test
     void testBankTransferRejectedStatusNoReferenceCode() {
         this.paymentData.put("bankName", "BCA");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
-                "BANK_TRANSFER", this.paymentData);
+        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "BANK_TRANSFER", matchedOrder, this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 }
