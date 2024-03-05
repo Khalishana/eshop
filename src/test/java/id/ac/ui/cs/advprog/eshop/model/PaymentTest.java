@@ -43,33 +43,35 @@ public class PaymentTest {
     @Test
     void testPaymentByVoucherCodeSuccessStatus() {
         this.paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "VOUCHER_CODE", matchedOrder, this.paymentData);
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                "VOUCHER_CODE", this.orders.getFirst(), this.paymentData);
 
         assertEquals("SUCCESS", payment.getStatus());
     }
 
+    // rejected if voucher code is not contain 16 characters
     @Test
     void testVoucherCodeRejectedStatusUnderSixteen() {
         this.paymentData.put("voucherCode", "ESHOP123");
-        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "VOUCHER_CODE", matchedOrder, this.paymentData);
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                "VOUCHER_CODE", this.orders.getFirst(), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
     @Test
     void testVoucherCodeRejectedStatusNoEshop() {
         this.paymentData.put("voucherCode", "12345678ABCDEFGH");
-        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "VOUCHER_CODE", matchedOrder, this.paymentData);
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                "VOUCHER_CODE", this.orders.getFirst(), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
+    // rejected if voucher code is not contain 8 numerical characters
     @Test
     void testVoucherCodeRejectedStatusUnderEight() {
         this.paymentData.put("voucherCode", "ESHOP123ABCDEFGH");
-        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "VOUCHER_CODE", matchedOrder, this.paymentData);
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                "VOUCHER_CODE", this.orders.getFirst(), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -77,24 +79,24 @@ public class PaymentTest {
     void testBankTransferSuccessStatus() {
         this.paymentData.put("bankName", "BCA");
         this.paymentData.put("referenceCode", "11100");
-        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "BANK_TRANSFER", matchedOrder, this.paymentData);
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                "BANK_TRANSFER", this.orders.getFirst(), this.paymentData);
         assertEquals("SUCCESS", payment.getStatus());
     }
 
     @Test
     void testBankTransferRejectedStatusNoBankName() {
         this.paymentData.put("referenceCode", "11100");
-        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "BANK_TRANSFER", matchedOrder, this.paymentData);
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                "BANK_TRANSFER", this.orders.getFirst(), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
     @Test
     void testBankTransferRejectedStatusNoReferenceCode() {
         this.paymentData.put("bankName", "BCA");
-        Order matchedOrder = findOrderById("13652556-012a-4c07-b546-54eb1396d79b");
-        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b", "BANK_TRANSFER", matchedOrder, this.paymentData);
+        Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
+                "BANK_TRANSFER", this.orders.getFirst(), this.paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 }
