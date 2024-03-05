@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,7 +66,7 @@ public class PaymentTest {
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
                 "VOUCHER_CODE", this.orders.get(1), this.paymentData);
 
-        assertEquals("SUCCESS", payment.getStatus());
+        assertEquals(PaymentStatus.SUCCESS, payment.getStatus());
     }
 
     // rejected if voucher code is not contain 16 characters
@@ -74,7 +75,7 @@ public class PaymentTest {
         this.paymentData.put("voucherCode", "ESHOP123");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
                 "VOUCHER_CODE", this.orders.get(1), this.paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED, payment.getStatus());
     }
 
     @Test
@@ -82,7 +83,7 @@ public class PaymentTest {
         this.paymentData.put("voucherCode", "12345678ABCDEFGH");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
                 "VOUCHER_CODE", this.orders.get(1), this.paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED, payment.getStatus());
     }
 
     // rejected if voucher code is not contain 8 numerical characters
@@ -91,7 +92,7 @@ public class PaymentTest {
         this.paymentData.put("voucherCode", "ESHOP123ABCDEFGH");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
                 "VOUCHER_CODE", this.orders.get(1), this.paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED, payment.getStatus());
     }
 
     @Test
@@ -100,7 +101,7 @@ public class PaymentTest {
         this.paymentData.put("referenceCode", "11100");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
                 "BANK_TRANSFER", this.orders.get(1), this.paymentData);
-        assertEquals("SUCCESS", payment.getStatus());
+        assertEquals(PaymentStatus.SUCCESS, payment.getStatus());
     }
 
     @Test
@@ -108,7 +109,7 @@ public class PaymentTest {
         this.paymentData.put("referenceCode", "11100");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
                 "BANK_TRANSFER", this.orders.get(1), this.paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED, payment.getStatus());
     }
 
     @Test
@@ -116,6 +117,6 @@ public class PaymentTest {
         this.paymentData.put("bankName", "BCA");
         Payment payment = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
                 "BANK_TRANSFER", this.orders.get(1), this.paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED, payment.getStatus());
     }
 }
