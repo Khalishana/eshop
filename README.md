@@ -56,3 +56,23 @@ Jawab: Keuntungan dari pengimplementasian SOLID principles pada projek yang saya
 
  3. Explain the disadvantages of not applying SOLID principles to your project with examples. <br>
 Jawab: Kerugian yang dapat dialami dengan tidak mengimplementasikan SOLID principles diantaranya kode yang saya miliki akan sulit untuk dikembangkan oleh dveloper lain hingga lebih sulitnya menambahkan update fitur baru karena bisa saja terdapat fungsionalitas modul lain yang terganggu atas terjadinya update tersebut.
+
+# Tutorial 4
+## Reflection
+1. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests. <br>
+Jawab: Mari kita tinjau aspek “Evaluating Your Testing Objectives” berdasarkan beberapa objektif, yakni Correctness, Maintainable Code, dan Productive Workflow. <br>
+#### a. Correctness:
+- Do I have enough functional tests to reassure myself that my application really works, from point of view of the user? Ya, pada rangkaian kode yang diberikan pada tutorial, ditunjukkan bagaimana proses yang perlu dilakukan sehingga testing yang awalnya tertolak atau ditandai dengan [RED] dapat diterima sepenuhnya yang ditandai dengan [GREEN]
+- Am I testing all edge cases thoroughly? Ya
+- Do I have tests that check whether all my components fit together properly? Could some integrated tests do this, or are functional tests enough? Ya, penggunaan functional tests saja sebenarnya cukup untuk melakukan tes terhadap seluruh komponen yang ada, akan tetapi penggunaan integrated tests tentunya juga dapat dilakukan untuk melakukan testing secara menyeluruh
+#### b. Maintainable Code
+- Are my tests giving me the confidence to refactor my code, fearlessly and frequently? Ya
+- Are my tests helping me to drive out a good design? If I have a lot of integration tests but less unit tests, do I need to make more unit tests to get better feedback on my code design? Ya, tes yang dilakukan membantu saya untuk mengimplementasikan good design pada kode yang saya punya. Walaupun sudah banyak integration tests yang diimplementasikan, mengintegrasikan integration tests dengan unit tests tidak hanya dapat lebih meningkatkan kualitas kode tetapi juga dapat memastikan desain sistem yang lebih kuat dan lebih mudah dipelihara. Oleh karena itu, membuat lebih banyak unit tests dapat memberi feedback yang lebih baik pada design code yang saya miliki
+#### c. Productive Workflow
+- Are my feedback cycles as fast as I would like them? When do I get warned about bugs, and is there any practical way to make that happen sooner? Ya, sejauh ini feedback cycles yang diberikan sudah sesuai dengan ekspektasi saya
+- Is there some way that I could write faster integration tests that would give me feedback quicker? Melakukan testing berulang secara berkala
+- Can I run a subset of the full test suite when I need to? Ya
+- Am I spending to much time waiting for tests to run, and thus less time in a productive flow state? Tidak
+
+2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests. <br>
+Jawab: F.I.R.S.T. principle yang mencakup fast, isolated/independent, repeatable, self-validating, dan thorough/timely sudah diimplementasikan pada kode yang saya punya. Testing yang dilakukan pada kode yang saya punya sudah berjalan dengan cepat tanpa mengganggu workflow yang ada, berlangsung secara independen tanpa mengganggu test case yang lain, menghasilkan hasil yang konsisten, dapat memberi feedback apakah tes berhasil atau tidak secara jelas (self-validating), serta meng-cover baik happy paths maupun unhappy paths dengan baik
