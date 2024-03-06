@@ -2,6 +2,7 @@ package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;
@@ -95,23 +96,40 @@ class PaymentServiceTest {
     }
 
     @Test
+    void testSetValidStatus() {
+        Payment payment = payments.get(1);
+
+        Payment resultSuccess = paymentService.setStatus(payment, PaymentStatus.SUCCESS);
+        assertEquals(PaymentStatus.SUCCESS, resultSuccess.getStatus());
+        assertEquals(OrderStatus.SUCCESS, resultSuccess.getOrder().getStatus());
+
+        Payment resultRejected = paymentService.setStatus(payment, PaymentStatus.REJECTED);
+        assertEquals(PaymentStatus.REJECTED, resultRejected.getStatus());
+        assertEquals(OrderStatus.FAILED, resultRejected.getOrder().getStatus());
+    }
+
+
+    @Test
     void testFindByIdIfIdFound() {
         Payment payment = payments.get(1);
         doReturn(payment).when(paymentRepository).findById(payment.getId());
 
-        Payment result = paymentService.findById(payment.getId());
+        Payment result = paymentService.getPayment(payment.getId());
         assertEquals(payment.getId(), result.getId());
     }
 
     @Test
     void testFindByIdIfIdNotFound() {
-        Payment payment = payments.get(0);
-        String nonExistingId = "zczc";
+        doReturn(null).when(paymentRepository).findById("zczc");
+        assertNull(paymentService.getPayment("zczc"));
+    }
 
-        doReturn(payment).when(paymentRepository).findById(payment.getId());
-        doReturn(null).when(paymentRepository).findById(nonExistingId);
+    @Test
+    void testGetAllPayments() {
+        doReturn(payments).when(paymentRepository).getAllPayment();
 
-        assertNull(paymentService.findById(nonExistingId));
+        List<Payment> results = paymentService.getAllPayments();
+        assertEquals(payments, results);
     }
 
 }
