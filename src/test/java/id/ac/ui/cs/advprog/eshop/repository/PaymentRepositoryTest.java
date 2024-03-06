@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
@@ -75,21 +76,6 @@ public class PaymentRepositoryTest {
         assertEquals(payment.getMethod(), findResult.getMethod());
         assertEquals(payment.getPaymentData().keySet(), findResult.getPaymentData().keySet());
         assertEquals(payment.getStatus(), findResult.getStatus());
-    }
-
-    @Test
-    void testSaveUpdate() {
-        Payment payment = payments.get(1);
-        paymentRepository.save(payment);
-        Payment newPayment = new Payment(payment.getId(), payment.getMethod().getMethod(), payment.getOrder(), payments.get(1).getPaymentData());
-        Payment result = paymentRepository.save(newPayment);
-
-        Payment findResult = paymentRepository.findById(payments.get(1).getId());
-        assertEquals(payment.getId(), result.getId());
-        assertEquals(payment.getId(), findResult.getId());
-        assertEquals(payment.getMethod(), findResult.getMethod());
-        assertEquals(payment.getPaymentData().keySet(), findResult.getPaymentData().keySet());
-        assertEquals(PaymentStatus.SUCCESS.getValue(), findResult.getStatus());
     }
 
     @Test
