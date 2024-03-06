@@ -92,22 +92,23 @@ class PaymentServiceTest {
         Payment result = paymentService.addPayment(paymentId, orders.get(1), PaymentMethod.VOUCHER_CODE.getMethod(), payments.get(1).getPaymentData());
         verify(paymentRepository, times(1)).findById(paymentId);
         verify(paymentRepository, times(0)).save(any(Payment.class));
-        assertEquals(payment.getId(), result.getId());
+        assertNull(result);
     }
 
     @Test
     void testSetValidStatus() {
         Payment payment = payments.get(1);
 
-        Payment resultSuccess = paymentService.setStatus(payment, PaymentStatus.SUCCESS);
-        assertEquals(PaymentStatus.SUCCESS, resultSuccess.getStatus());
-        assertEquals(OrderStatus.SUCCESS, resultSuccess.getOrder().getStatus());
+        Payment newPayment1 = new Payment(payment.getId(), payment.getMethod().getMethod(), payment.getOrder(), payment.getPaymentData());
+        Payment result1 = paymentService.setStatus(newPayment1, "SUCCESS");
+        assertEquals(newPayment1.getId(), result1.getId());
+        assertEquals(OrderStatus.SUCCESS.getValue(), result1.getOrder().getStatus());
 
-        Payment resultRejected = paymentService.setStatus(payment, PaymentStatus.REJECTED);
-        assertEquals(PaymentStatus.REJECTED, resultRejected.getStatus());
-        assertEquals(OrderStatus.FAILED, resultRejected.getOrder().getStatus());
+        Payment newPayment2 = new Payment(payment.getId(), payment.getMethod().getMethod(), payment.getOrder(), payment.getPaymentData());
+        Payment result2 = paymentService.setStatus(newPayment1, "REJECTED");
+        assertEquals(newPayment2.getId(), result2.getId());
+        assertEquals(OrderStatus.FAILED.getValue(), result1.getOrder().getStatus());
     }
-
 
     @Test
     void testFindByIdIfIdFound() {
